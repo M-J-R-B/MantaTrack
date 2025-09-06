@@ -12,7 +12,7 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <a href="#" class="logo">MantaTrack</a>
+            <a href="#price-board" class="logo">MantaTrack</a>
             <nav class="nav-links">
                 <a href="#price-board" class="nav-link active">
                     <i class="fas fa-home"></i>
@@ -178,32 +178,31 @@
 
         <!-- Login Page -->
         <section id="login" class="page">
-            <div class="auth-container">
-                <div class="auth-card">
-                    <h2 class="auth-title">Login to MantaTrack</h2>
-                    <p class="text-gray-600 mb-6">Access your buyer dashboard</p>
+            <div class="login-split-container">
+                <div class="login-left-panel">
+                    <div class="login-overlay"></div>
+                    <div class="login-content">
+                        <h1>Welcome<br>to MantaTrack!</h1>
+                        <p>Easily stay updated on the latest prices of vegetables in Mantalongon, Dalaguete.</p>
+                        <div class="login-copyright">
+                            © 2025 MantaTrack. All rights reserved.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login-right-panel">
+                    <h2>Login to MantaTrack</h2>
+                    <p class="login-subtitle">Access your buyer dashboard</p>
                     
-                    <form onsubmit="handleLogin(event)" class="auth-form">
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-input" id="login-email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-input" id="login-password" required>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary w-full">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Login
-                        </button>
+                    <form onsubmit="handleLogin(event)" class="login-form">
+                        <input type="email" name="email" id="login-email" placeholder="Email" required />
+                        <input type="password" name="password" id="login-password" placeholder="Password" required />
+                        <button type="submit">Login</button>
                     </form>
                     
-                    <div class="auth-footer">
-                        <p class="text-gray-600">Don't have an account? 
-                            <a href="#signup" onclick="showPage('signup')" class="text-blue-600">Sign up</a>
-                        </p>
+                    <p class="login-signup-link">Don't have an account? <a href="#signup" onclick="showPage('signup')">Create now</a></p>
+                    
+                    <div class="login-footer-link">
                         <div class="demo-info">
                             <p class="text-sm text-gray-500">Demo Account:</p>
                             <p class="text-sm">Email: demo@example.com</p>
@@ -318,7 +317,7 @@
                 <!-- User's Price Entries -->
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">Your Price Entries</h2>
+                        <h2 class="card-title">Your Purchase Prices</h2>
                         <div class="text-sm text-gray-600">
                             5 entries • Last updated: Dec 15, 2024 10:45
                         </div>
@@ -337,7 +336,7 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="dashboard-table-body">
                                 <tr>
                                     <td class="font-medium">Tomato</td>
                                     <td class="font-semibold text-green-600">₱45.00</td>
@@ -346,10 +345,16 @@
                                     <td class="text-gray-600">Dec 15, 2024 09:30</td>
                                     <td><span class="badge badge-success">Fresh</span></td>
                                     <td>
-                                        <button onclick="openEditModal('1')" class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                            Edit
-                                        </button>
+                                        <div class="flex gap-2">
+                                            <button onclick="openEditModal('1')" class="btn btn-outline btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </button>
+                                            <button onclick="deleteVegetable('1')" class="btn btn-outline btn-sm text-red-600 hover:bg-red-50">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -360,10 +365,16 @@
                                     <td class="text-gray-600">Dec 14, 2024 14:20</td>
                                     <td><span class="badge badge-warning">Stale</span></td>
                                     <td>
-                                        <button onclick="openEditModal('2')" class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                            Edit
-                                        </button>
+                                        <div class="flex gap-2">
+                                            <button onclick="openEditModal('2')" class="btn btn-outline btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </button>
+                                            <button onclick="deleteVegetable('2')" class="btn btn-outline btn-sm text-red-600 hover:bg-red-50">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -472,9 +483,9 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="form-group">
-                        <label class="form-label">Price (₱) *</label>
+                        <label class="form-label">Purchase Price (₱) *</label>
                         <input type="number" step="0.01" min="0" class="form-input" 
-                               id="entry-price" placeholder="0.00" required>
+                               id="entry-price" placeholder="Enter price you're paying" required>
                     </div>
 
                     <div class="form-group">
@@ -488,15 +499,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Available Quantity (Optional)</label>
+                    <label class="form-label">Quantity Needed (Optional)</label>
                     <input type="number" min="0" class="form-input" 
-                           id="entry-quantity" placeholder="Enter available quantity">
+                           id="entry-quantity" placeholder="Enter quantity you need">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Notes (Optional)</label>
                     <textarea class="form-input" rows="3" id="entry-notes" 
-                              placeholder="Add any additional notes..."></textarea>
+                              placeholder="Add purchase conditions, quality requirements, etc."></textarea>
                 </div>
             </form>
             
